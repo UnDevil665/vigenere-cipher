@@ -69,8 +69,13 @@ namespace vigenere_cipher
         }
           static bool encrypt()
             {
+                 Console.Write("\nВведите сообщение: ");
                 byte[] text = Encoding.GetEncoding(1251).GetBytes(Console.ReadLine());
+
+                Console.Write("\nВведите ключ: ");
                 byte[] key = Encoding.GetEncoding(1251).GetBytes(Console.ReadLine());
+
+
                 byte[] shifr = new byte[text.Length];
 
 
@@ -97,8 +102,12 @@ namespace vigenere_cipher
             }
         static bool decrypt()
         {
-            byte[] text = Encoding.GetEncoding(1251).GetBytes(Console.ReadLine());
+            Console.Write("\nВведите ключ: ");
             byte[] key = Encoding.GetEncoding(1251).GetBytes(Console.ReadLine());
+
+            Console.Write("\nВведите зашифрованное сообщение: ");
+            byte[] text = Encoding.GetEncoding(1251).GetBytes(Console.ReadLine());
+
             byte[] shifr = new byte[text.Length];
 
 
