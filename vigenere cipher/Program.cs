@@ -25,12 +25,49 @@ namespace vigenere_cipher
                 Console.WriteLine();
             }
 
-            decrypt();
-            encrypt();
+            while(true)
+            {
+                Console.Clear();
+                Console.WriteLine("\nШифр Виженера для русского алфавита\n");
+                Console.WriteLine("Чтобы зашифровать сообщение, нажмите 1.\nЧтобы дешифровать сообщение, нажмите 2.\nДля выхода, нажмите 0");
+                switch (Console.ReadLine())
+                {
+                    case "0":
+                        System.Environment.Exit(0);
+                        break;
+                    case "1":
+                        if (encrypt() == false)
+                        {
+                            Console.WriteLine("\nОшибка: были введены символы, отличные от русского алфавита.\n\nНажмите любую клавишу");
+                            Console.ReadKey();
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nШифрование завершено.\n\nНажмите любую клавишу");
+                            Console.ReadKey();
+                        }
+                        break;
+                    case "2":
+                        if (decrypt() == false)
+                        {
+                            Console.WriteLine("\nОшибка: были введены символы, отличные от русского алфавита.\n\nНажмите любую клавишу");
+                            Console.ReadKey();
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nДешифрование завершено.\n\nНажмите любую клавишу");
+                            Console.ReadKey();
+                        }
+                        break;
+                    default:
+                        Console.Clear();
+                        Console.WriteLine("Ошибка: был введен иной символ");
+                        break;
+                }
+            }
 
-             Console.ReadKey();
         }
-          static string encrypt()
+          static bool encrypt()
             {
                 byte[] text = Encoding.GetEncoding(1251).GetBytes(Console.ReadLine());
                 byte[] key = Encoding.GetEncoding(1251).GetBytes(Console.ReadLine());
@@ -39,13 +76,13 @@ namespace vigenere_cipher
 
                 for (int i = 0; i < text.Length; i++)
                 {
-                    text[i] = (byte)(text[i] - 224);
-                    Console.Write("{0} ", text[i]);
-              //  Console.WriteLine();
-                    key[i] = (byte)(key[i] - 224);
-                    Console.Write("{0} ", key[i]);
-                }
+                    if ((text[i] < 224) || (key[i] < 224))
+                        return false;
 
+                    text[i] = (byte)(text[i] - 224);
+                    key[i] = (byte)(key[i] - 224);
+                }
+            Console.ReadKey();
                 for (int i = 0; i < text.Length; i++)
                 {
                     if (text[i] + key[i] >= 32)
@@ -56,9 +93,9 @@ namespace vigenere_cipher
                 }
             
                 Console.WriteLine(System.Text.Encoding.GetEncoding(1251).GetString((shifr)));
-            return Encoding.GetEncoding(1251).GetString((shifr));
+            return true;
             }
-        static string decrypt()
+        static bool decrypt()
         {
             byte[] text = Encoding.GetEncoding(1251).GetBytes(Console.ReadLine());
             byte[] key = Encoding.GetEncoding(1251).GetBytes(Console.ReadLine());
@@ -67,6 +104,9 @@ namespace vigenere_cipher
 
             for (int i = 0; i < text.Length; i++)
             {
+                if((text[i] < 224) || (key[i] < 224))
+                        return false;
+
                 text[i] = (byte)(text[i] - 224);
                 key[i] = (byte)(key[i] - 224);
             }
@@ -81,7 +121,7 @@ namespace vigenere_cipher
             }
 
             Console.WriteLine(System.Text.Encoding.GetEncoding(1251).GetString((shifr)));
-            return Encoding.GetEncoding(1251).GetString((shifr));
+            return true;
         }
     }
 }
