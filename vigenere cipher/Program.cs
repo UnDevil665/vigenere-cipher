@@ -86,7 +86,7 @@ namespace vigenere_cipher
                 for(int i = 0; i < text.Length; i++)
                     if ((text[i] < 224) || (key[i] < 224))
                         return false;
-                matrix(System.Text.Encoding.GetEncoding(1251).GetString((key)));
+                showMatrix(System.Text.Encoding.GetEncoding(1251).GetString((key)));
 
             for (int i = 0; i < text.Length; i++)
                 {
@@ -117,7 +117,7 @@ namespace vigenere_cipher
 
             byte[] shifr = new byte[text.Length];
 
-            matrix(System.Text.Encoding.GetEncoding(1251).GetString((key)));
+            showMatrix(System.Text.Encoding.GetEncoding(1251).GetString((key)));
 
             for (int i = 0; i < text.Length; i++)
             {
@@ -141,7 +141,7 @@ namespace vigenere_cipher
             return true;
         }
 
-        static void matrix(string input)
+        static void showMatrix(string input)
         {
             //Console.WriteLine((int)('а'));
             string alphabet = "абвгдежзийклмнопрстуфхцчшщъыьэюя";
