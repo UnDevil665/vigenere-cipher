@@ -79,14 +79,21 @@ namespace vigenere_cipher
                 byte[] text = Encoding.GetEncoding(1251).GetBytes(Console.ReadLine());
 
                 Console.Write("\nВведите ключ: ");
-                byte[] key = Encoding.GetEncoding(1251).GetBytes(Console.ReadLine());
+                byte[] key  = new byte[text.Length];
+                byte[] bkey = Encoding.GetEncoding(1251).GetBytes(Console.ReadLine());
+
+                for (int i = 0; i < text.Length; i++)
+                {
+                    key[i] = bkey[i - bkey.Length * (i / bkey.Length)];
+
+                }
 
                 byte[] shifr = new byte[text.Length];
 
-                for(int i = 0; i < text.Length; i++)
-                    if ((text[i] < 224) || (key[i] < 224))
-                        return false;
-                matrix(System.Text.Encoding.GetEncoding(1251).GetString((key)));
+               // for(int i = 0; i < text.Length; i++)
+               //     if ((text[i] < 224) || (key[i] < 224))
+               //         return false;
+                showMatrix(System.Text.Encoding.GetEncoding(1251).GetString((key)));
 
             for (int i = 0; i < text.Length; i++)
                 {
@@ -110,30 +117,38 @@ namespace vigenere_cipher
         {
             Console.Clear();
             Console.Write("\nВведите шифр: ");
-            byte[] key = Encoding.GetEncoding(1251).GetBytes(Console.ReadLine());
-
-            Console.Write("\nВведите ключ: ");
             byte[] text = Encoding.GetEncoding(1251).GetBytes(Console.ReadLine());
 
-            byte[] shifr = new byte[text.Length];
+            Console.Write("\nВведите ключ: ");
 
-            matrix(System.Text.Encoding.GetEncoding(1251).GetString((key)));
+            byte[] key = new byte[text.Length];
+            byte[] bkey = Encoding.GetEncoding(1251).GetBytes(Console.ReadLine());
 
             for (int i = 0; i < text.Length; i++)
             {
-                if((text[i] < 224) || (key[i] < 224))
-                        return false;
+                key[i] = bkey[i - bkey.Length * (i / bkey.Length)];
 
-                text[i] = (byte)(text[i] - 224);
-                key[i] = (byte)(key[i] - 224);
             }
 
-            for (int i = 0; i < text.Length; i++)
+            byte[] shifr = new byte[key.Length];
+
+            showMatrix(System.Text.Encoding.GetEncoding(1251).GetString((key)));
+
+            for (int i = 0; i < key.Length; i++)
             {
-                if (text[i] > key[i])
-                    shifr[i] = (byte)(32 - (text[i] - key[i]) + 224);
+                if((key[i] < 224) || (text[i] < 224))
+                        return false;
+
+                key[i] = (byte)(key[i] - 224);
+                text[i] = (byte)(text[i] - 224);
+            }
+
+            for (int i = 0; i < key.Length; i++)
+            {
+                if (key[i] > text[i])
+                    shifr[i] = (byte)(32 - (key[i] - text[i]) + 224);
                 else
-                    shifr[i] = (byte)(key[i] - text[i] + 224);
+                    shifr[i] = (byte)(text[i] - key[i] + 224);
 
             }
 
@@ -141,7 +156,7 @@ namespace vigenere_cipher
             return true;
         }
 
-        static void matrix(string input)
+        static void showMatrix(string input)
         {
             //Console.WriteLine((int)('а'));
             string alphabet = "абвгдежзийклмнопрстуфхцчшщъыьэюя";
@@ -165,10 +180,11 @@ namespace vigenere_cipher
                                 Console.Write("{0} ", (char)(1072 + j + k));
                                 //Console.Write("{0} ", 1072 + j + k);
                         }
-                        alphabet.Remove(j, 1);
+                        alphabet.Trim(input[i]);
                         Console.WriteLine();
 
                     }
+                input.Trim(input[i]);
             }
             
         }
